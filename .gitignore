@@ -1,4 +1,6 @@
 node_modules
 coverage
 .DS_Store
+testnet_chain/boot_node/data/
+testnet_chain/bp_node/data/
 package-lock.json
