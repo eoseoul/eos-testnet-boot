@@ -1,0 +1,19 @@
+{
+    "timezone" : "+00:00",
+    "eosNode" : {    // server to server
+        "host" :"localhost",
+        "protocol": "http",
+        "httpPort" : 3330,
+        "p2pPort" : 5550,
+        "systemAccount" : "eosio",
+        "biosAccount" : "eosio",
+        "bpAccount" : "bpnode111111",
+        "symbol" : "EOS",
+        "bpPriKey" : "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3",
+        "bpPubKey" : "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+        "eosioPriKey" : "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3",
+        "eosioPubKey" : "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+        "chainId" : "a4fe43c897279a677025624555f3835b949f995f87923c97f0392dcff835bfd0"
+    },
+    "apiServer" : "https://portal.eoseoul.io",
+}
