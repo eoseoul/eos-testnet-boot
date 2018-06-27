@@ -1,7 +1,8 @@
 # eos-testnet-boot
 
-It is a tool that allows developers to run nodeos on a PC, execute a boot sequence, create a block, and test the environment.
-It does not cover builds of nodeos.
+Developers have been booting nodeos on their PCs, and producers have been developed to produce blocks.
+It has been developed using eosjs, so it may be useful for front-end developers as well.
+But, it does not cover builds of nodeos.
 
 ## Boot Nodeos (Boot must be run only once)
     1. start boot_node
@@ -30,7 +31,7 @@ It does not cover builds of nodeos.
         cd ./testnet_chain/bp_node
         ./start.sh
 
-## etc
+## Etc
     1. check nodeos log
         cd ./testnet_chain/boot_node
         tail -f data/stderr.txt
