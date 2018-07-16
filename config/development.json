@@ -1,9 +1,9 @@
 {
     "timezone" : "+00:00",
     "eosNode" : {    // server to server
-        "host" :"localhost",
+        "host" :"127.0.0.1",
         "protocol": "http",
-        "httpPort" : 3330,
+        "httpPort" : 8888,
         "p2pPort" : 5550,
         "systemAccount" : "eosio",
         "biosAccount" : "eosio",
