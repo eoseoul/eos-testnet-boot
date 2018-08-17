@@ -94,6 +94,116 @@ const authes = (() => {
     return authes;
 })();
 
+const committees = [{
+    committeeman : 'committeeaaa',
+    category : 'emergency',
+    is_oversight : 1
+}, {
+    committeeman : 'committeeaab',
+    category : 'watchman',
+    is_oversight : 1
+}];
+
+const reviewers = [{
+    reviewer : 'revieweraaaa',
+    committee : 'committeeaaa',
+    first_name : 'Thomas',
+    last_name : 'Do'
+}, {
+    reviewer : 'revieweraaab',
+    committee : 'committeeaaa',
+    first_name : 'Thomas',
+    last_name : 'Cox'
+}];
+
+const proposers = [{
+    account : 'proposeraaaa',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaab',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaac',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaad',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaae',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaaf',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaag',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}];
+
+const proposals = _.map(proposers, (proposer) => {
+    return {
+        proposer : proposer.account,
+        committee : 'committeeaaa',
+        subcategory : 1,
+        title : `wps project title ${proposer}`,
+        summary : 'wps proejct summary',
+        project_img_url : 'http://www.google.com',
+        description : 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
+        roadmap : 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
+        duration : 30,
+        members : ['yepp4you1', 'yepp4you2', 'yepp4you3'],
+        funding_goal : '10.0000 EOS'
+    };
+});
+
 module.exports = exports = {
     systemToken,
     accounts,
@@ -107,5 +217,9 @@ module.exports = exports = {
     newAccountDelegate,
     delegates,
     votes,
-    authes
+    authes,
+    committees,
+    reviewers,
+    proposers,
+    proposals
 };

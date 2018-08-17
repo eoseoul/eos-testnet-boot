@@ -13,10 +13,10 @@ const Promise = require('bluebird'),
 const eosNodeConfig = config.eosNode;
 const readFile = Promise.promisify(fs.readFile);
 
-function getConfig(httpEndPoint) {
+function getConfig(httpEndPoint, key) {
     const endpoint = getEndpoint(httpEndPoint);
     return {
-        keyProvider: eosNodeConfig.eosioPriKey,
+        keyProvider: key || eosNodeConfig.eosioPriKey,
         httpEndpoint: endpoint,
         // mockTransactions: () => 'pass', // or 'fail'
         // transactionHeaders: (expireInSeconds, callback) => { callback(null/*error*/, headers)},
@@ -302,8 +302,8 @@ function getProducers(lowerBound, limit, endpoint) {
         });
 }
 
-function deployContract(account, contractPath, endpoint) {
-    const options = getConfig(endpoint);
+function deployContract(account, contractPath, endpoint, key) {
+    const options = getConfig(endpoint, key);
     options.binaryen = binaryen;
     const name = path.parse(contractPath).base;
     return Promise.join(
@@ -345,8 +345,8 @@ function updateauth(auth, endpoint) {
         });
 }
 
-function getEos(endpoint) {
-    const options = getConfig(endpoint);
+function getEos(endpoint, key) {
+    const options = getConfig(endpoint, key);
     return Eos(options);
 }
 

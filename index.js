@@ -4,9 +4,11 @@ let Promise = require('bluebird'),
     _ = require('lodash'),
     path = require('path'),
     eosApi = require('external_apis/eos_api'),
-    data = require('./data');
+    data = require('./data'),
+    wps = require('./wps');
 
 bootNode();
+// wps.flowWps();
 
 async function bootNode() {
     const dummy = Object.assign({}, {}, data);
@@ -190,6 +192,23 @@ async function bootNode() {
     }();
 
     await function() {
+        console.log('deploy eosio.wps contract');
+        const contractPath = path.join(__dirname, 'contract', 'eosio.wps');
+        return eosApi.deployContract('eosio.wps', contractPath, undefined, '5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr')
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((err) => {
+            return eosApi.deployContract('eosio.wps', contractPath, undefined, '5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr')
+                .catch((err) => {
+                    console.log(err);
+                });
+        });
+    }();
+
+    // await wps.flowWps();
+
+    await function() {
         console.log('updateauth ===>');
         return Promise.each(dummy.authes, (auth) => {
             console.log(`updateauth ${auth.account}`);
@@ -200,4 +219,5 @@ async function bootNode() {
             });
         });
     }();
+
 }
