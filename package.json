@@ -1,17 +1,17 @@
 {
   "name": "eos-boot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "boot": "NODE_ENV=development NODE_PATH=. node ./index"
   },
   "dependencies": {
     "binaryen": "^37.0.0",
-    "bluebird": "^3.5.1",
-    "config": "^1.30.0",
-    "eosjs": "^16.0.0",
-    "lodash": "^4.17.10",
-    "request": "^2.87.0"
+    "bluebird": "^3.5.2",
+    "config": "^1.31.0",
+    "eosjs": "^16.0.8",
+    "lodash": "^4.17.11",
+    "request": "^2.88.0"
   },
   "devDependencies": {}
 }
