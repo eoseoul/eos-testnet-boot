@@ -8,7 +8,6 @@ let Promise = require('bluebird'),
     wps = require('./wps');
 
 bootNode();
-// wps.flowWps();
 
 async function bootNode() {
     const dummy = Object.assign({}, {}, data);
@@ -18,13 +17,14 @@ async function bootNode() {
         return Promise.each(dummy.systemAccounts, (account) => {
             console.log(`create account ${account.name}.`);
             return Promise.resolve(eosApi.newaccount(account))
-                .delay(10)
-                .catch(function(err) {
-                    return Promise.resolve(eosApi.newaccount(account))
-                        .catch(function(err) {
-                            console.log(err);
-                        });
-                });
+                .catch((err) => {
+                    if (err.error && err.error.code === 3050001) { // already exist
+                        console.log(err.error.what);
+                        return;
+                    }
+                    throw err;
+                })
+                .delay(200);
         });
     }();
 
@@ -32,14 +32,15 @@ async function bootNode() {
         console.log('deploy eosio.bios contract');
         const contractPath = path.join(__dirname, 'contract', 'eosio.bios');
         return eosApi.deployContract('eosio', contractPath)
+        .catch((err) => {
+            if (err.error && err.error.code === 3160008) { // set_exact_code: Contract is already running this version
+                console.log(err.error.what);
+                return;
+            }
+            throw err;
+        })
         .then((result) => {
             console.log(result);
-        })
-        .catch((err) => {
-            return eosApi.deployContract('eosio', contractPath)
-                .catch((err) => {
-                    console.log(err);
-                });
         });
     }();
 
@@ -48,13 +49,7 @@ async function bootNode() {
         return Promise.each(dummy.systemAccounts, (account) => {
             console.log(`setpriv ${account.name}.`);
             return Promise.resolve(eosApi.setpriv({account : account.name, is_priv : 1}))
-                .delay(10)
-                .catch(function(err) {
-                    return Promise.resolve(eosApi.setpriv({account : account.name, is_priv : 1}))
-                        .catch(function(err) {
-                            console.log(err);
-                        });
-                });
+                .delay(200);
         });
     }();
 
@@ -62,14 +57,15 @@ async function bootNode() {
         console.log('deploy eosio.token contract');
         const contractPath = path.join(__dirname, 'contract', 'eosio.token');
         return eosApi.deployContract('eosio.token', contractPath)
+        .catch((err) => {
+            if (err.error && err.error.code === 3160008) { // set_exact_code: Contract is already running this version
+                console.log(err.error.what);
+                return;
+            }
+            throw err;
+        })
         .then((result) => {
             console.log(result);
-        })
-        .catch((err) => {
-            return eosApi.deployContract('eosio.token', contractPath)
-                .catch((err) => {
-                    console.log(err);
-                });
         });
     }();
 
@@ -89,14 +85,15 @@ async function bootNode() {
         console.log('deploy eosio.system contract');
         const contractPath = path.join(__dirname, 'contract', 'eosio.system');
         return eosApi.deployContract('eosio', contractPath)
+        .catch((err) => {
+            if (err.error && err.error.code === 3160008) { // set_exact_code: Contract is already running this version
+                console.log(err.error.what);
+                return;
+            }
+            throw err;
+        })
         .then((result) => {
             console.log(result);
-        })
-        .catch((err) => {
-            return eosApi.deployContract('eosio', contractPath)
-                .catch((err) => {
-                    console.log(err);
-                });
         });
     }();
 
@@ -107,10 +104,14 @@ async function bootNode() {
             const newAccountBuyRam = Object.assign({}, dummy.newAccountBuyRam, {receiver : newAccount.name});
             const newAccountDelegate = Object.assign({}, dummy.newAccountDelegate, {receiver : newAccount.name});
             return Promise.resolve(eosApi.newaccount(newAccount, newAccountBuyRam, newAccountDelegate))
-                .delay(10)
-                .catch(function(err) {
-                    console.log(err);
-                });
+                .catch((err) => {
+                    if (err.error.code === 3050001) { // already exist
+                        console.log(err.error.what);
+                        return;
+                    }
+                    throw err;
+                })
+                .delay(200);
         })
         .then(() => {
             return Promise.each(dummy.newProdAccounts, (prodAccount) => {
@@ -118,10 +119,14 @@ async function bootNode() {
                 const newAccountDelegate = Object.assign({}, dummy.newAccountDelegate, {receiver : prodAccount.name});
                 console.log(`newaccount ${prodAccount.name}`);
                 return Promise.resolve(eosApi.newaccount(prodAccount, newAccountBuyRam, newAccountDelegate))
-                    .delay(10)
-                    .catch(function(err) {
-                        console.log(err);
-                    });
+                .catch((err) => {
+                    if (err.error.code === 3050001) { // already exist
+                        console.log(err.error.what);
+                        return;
+                    }
+                    throw err;
+                })
+                    .delay(200);
             });
         });
     }();
@@ -132,10 +137,11 @@ async function bootNode() {
             console.log(`regproducer ${_producer.producer}`);
             const producer = _.find(data.accounts.producers, {name : _producer.producer});
             return Promise.resolve(eosApi.regproducer(_producer, producer.pvt))
-            .delay(10)
             .catch(function(err) {
                 console.log(err);
-            });
+                throw err;
+            })
+            .delay(200);
         });
     }();
 
@@ -144,10 +150,10 @@ async function bootNode() {
         return Promise.each(dummy.transfers, (transfer) => {
             console.log(`transfer ${transfer.to}`);
             return Promise.resolve(eosApi.transfer(transfer))
-            .delay(10)
-            .catch(function(err) {
-                console.log(err);
-            });
+            .then((result) => {
+                console.log(result);
+            })
+            .delay(200);
         });
     }();
 
@@ -157,10 +163,7 @@ async function bootNode() {
             console.log(`buyram ${ram.receiver}`);
             const user = _.find(data.accounts.users, {name : ram.payer});
             return Promise.resolve(eosApi.buyram(ram, user.pvt))
-            .delay(10)
-            .catch(function(err) {
-                console.log(err);
-            });
+            .delay(200);
         });
     }();
 
@@ -170,10 +173,7 @@ async function bootNode() {
             console.log(`delegatebw ${delegate.receiver}`);
             const user = _.find(data.accounts.users, {name : delegate.from});
             return Promise.resolve(eosApi.delegatebw(delegate, user.pvt))
-            .delay(10)
-            .catch(function(err) {
-                console.log(err);
-            });
+            .delay(200);
         });
     }();
 
@@ -184,29 +184,28 @@ async function bootNode() {
             const user = _.find(data.accounts.users, {name : vote.voter});
             vote.producers = vote.producers.sort();
             return Promise.resolve(eosApi.voteproducer(vote, user.pvt))
-            .delay(10)
-            .catch(function(err) {
-                console.log(err);
-            });
+            .delay(20);
         });
     }();
-
+    /*
     await function() {
         console.log('deploy eosio.wps contract');
         const contractPath = path.join(__dirname, 'contract', 'eosio.wps');
         return eosApi.deployContract('eosio.wps', contractPath, undefined, '5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr')
+        .catch((err) => {
+            console.log(err);
+            if (err.error && err.error.code === 3160008) { // set_exact_code: Contract is already running this version
+                console.log(err.error.what);
+                return;
+            }
+            throw err;
+        })
         .then((result) => {
             console.log(result);
-        })
-        .catch((err) => {
-            return eosApi.deployContract('eosio.wps', contractPath, undefined, '5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr')
-                .catch((err) => {
-                    console.log(err);
-                });
         });
     }();
 
-    // await wps.flowWps();
+    await wps.flowWps();
 
     await function() {
         console.log('updateauth ===>');
@@ -219,5 +218,5 @@ async function bootNode() {
             });
         });
     }();
-
+    */
 }

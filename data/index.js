@@ -3,7 +3,7 @@
 const _ = require('lodash'),
     accounts = require('./accounts.json');
 
-const userCount = 50;
+const userCount = 30;
 const producerCount = accounts.producers.length;
 const eosPerUser = parseInt(1000000000 / userCount, 10);
 const delegatePerUser = parseInt(eosPerUser * 0.4, 10);
@@ -21,6 +21,7 @@ const systemToken = {
 
 const systemAccounts = [
     {creator : 'eosio', name : 'eosio.bpay', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
+    {creator : 'eosio', name : 'eosio.vpay', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
     {creator : 'eosio', name : 'eosio.msig', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
     {creator : 'eosio', name : 'eosio.names', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
     {creator : 'eosio', name : 'eosio.ram', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
@@ -28,7 +29,6 @@ const systemAccounts = [
     {creator : 'eosio', name : 'eosio.saving', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
     {creator : 'eosio', name : 'eosio.stake', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
     {creator : 'eosio', name : 'eosio.token', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
-    {creator : 'eosio', name : 'eosio.upay', owner : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV', active : 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'},
 ];
 
 const regProducers = _.map(accounts.producers, (producer) => {
@@ -178,6 +178,106 @@ const proposers = [{
     linkedin : 'thomas-do-01911516a',
 }, {
     account : 'proposeraaag',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaah',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaai',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaaj',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaak',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaal',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaam',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaan',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaao',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaap',
+    first_name : 'Thomas',
+    last_name : 'Do',
+    img_url : 'http://www.google.com',
+    bio : 'hi~',
+    country : 'KR',
+    telegram : '@yepp4you',
+    website : 'http://www.block.one',
+    linkedin : 'thomas-do-01911516a',
+}, {
+    account : 'proposeraaaq',
     first_name : 'Thomas',
     last_name : 'Do',
     img_url : 'http://www.google.com',
