@@ -40,16 +40,31 @@ function wrap(_EosApi) {
                     eosApi.options.httpEndpoint = endpoints[0];
                     ret = await func.apply(eosApi, args)
                         .catch((err) => {
-                            if (typeof err === 'string') {
-                                err = JSON.parse(err);
-                            }
-                            if (err.status === 502 || err.status === 429 || (err.name === 'TypeError' && err.message === 'Failed to fetch') || err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED' || err.code === 'ECONNREFUSED') {
+                            console.log(err);
+                            if (err.status === 502 || err.status === 429 || (err.name === 'TypeError' && err.message === 'Failed to fetch') || err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
                                 const endpoint = endpoints.shift();
                                 endpoints = endpoints.concat([endpoint]);
                                 return null;
-                            } else if (err.error && err.error.code === 3080006) { // transaction too long
-                                return Promise.resolve(null).delay(5000);
+                            }
+                            if (typeof err === 'string') {
+                                err = JSON.parse(err);
+                            }
+                            if (!_.isNil(err.error)) {
+                                if (err.error.code === 3080006) { // transaction too long // push_transaction의 경우, error.message를 eosjs에서 리턴함.
+                                    console.log('transaction too long delay');
+                                    return Promise.resolve(null).delay(5000);
+                                }
+                                throw err;
                             } else {
+                                if (!_.isEmpty(err.message)) {
+                                    try {
+                                        const message = JSON.parse(err.message);
+                                        if (!_.isEmpty(message.error) && !_.isNil(message.error.code)) {
+                                            throw message;
+                                        }
+                                    } catch (err) {
+                                    }
+                                }
                                 throw err;
                             }
                         });

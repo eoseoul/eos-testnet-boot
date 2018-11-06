@@ -16,7 +16,7 @@ const issue = 1000000000 + ram * (userCount + producerCount) + stake_cpu * (user
 
 const systemToken = {
     create : `${create}.0000 EOS`,
-    issue : `${issue}.0000 EOS`
+    issue : `${issue + 10000000}.0000 EOS`
 };
 
 const systemAccounts = [

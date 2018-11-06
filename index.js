@@ -38,9 +38,6 @@ async function bootNode() {
                 return;
             }
             throw err;
-        })
-        .then((result) => {
-            console.log(result);
         });
     }();
 
@@ -63,9 +60,6 @@ async function bootNode() {
                 return;
             }
             throw err;
-        })
-        .then((result) => {
-            console.log(result);
         });
     }();
 
@@ -77,7 +71,7 @@ async function bootNode() {
             eosio_token.issue('eosio', dummy.systemToken.issue, 'issue', {authorization: 'eosio'});
         })
         .then((result) => {
-            console.log(result);
+            // console.log(result);
         });
     }();
 
@@ -91,9 +85,6 @@ async function bootNode() {
                 return;
             }
             throw err;
-        })
-        .then((result) => {
-            console.log(result);
         });
     }();
 
@@ -126,7 +117,7 @@ async function bootNode() {
                     }
                     throw err;
                 })
-                    .delay(200);
+                .delay(200);
             });
         });
     }();
@@ -151,7 +142,7 @@ async function bootNode() {
             console.log(`transfer ${transfer.to}`);
             return Promise.resolve(eosApi.transfer(transfer))
             .then((result) => {
-                console.log(result);
+                // console.log(result);
             })
             .delay(200);
         });
@@ -187,11 +178,12 @@ async function bootNode() {
             .delay(20);
         });
     }();
+
     /*
     await function() {
         console.log('deploy eosio.wps contract');
         const contractPath = path.join(__dirname, 'contract', 'eosio.wps');
-        return eosApi.deployContract('eosio.wps', contractPath, undefined, '5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr')
+        return eosApi.deployContract('eosio.wps', contractPath, {keyProvider : '5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr'})
         .catch((err) => {
             console.log(err);
             if (err.error && err.error.code === 3160008) { // set_exact_code: Contract is already running this version
@@ -199,9 +191,6 @@ async function bootNode() {
                 return;
             }
             throw err;
-        })
-        .then((result) => {
-            console.log(result);
         });
     }();
 

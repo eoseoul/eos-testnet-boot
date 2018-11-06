@@ -21,8 +21,8 @@ class EosApi {
         return _.defaults({}, options, this.options);
     }
 
-    getEos(endpoint, keyProvider) {
-        return Eos(this.getOptions({endpoint, keyProvider}));
+    getEos(options) {
+        return Eos(this.getOptions(options));
     }
 
     getInfo(endpoint) {
@@ -67,6 +67,31 @@ class EosApi {
         return eos.getTableRows(params);
     }
 
+    getProducers(lowerBound, limit, endpoint) {
+        const eos = Eos(this.getOptions({endpoint}));
+        const params = {
+            json : true,
+            lower_bound : lowerBound,
+            limit : limit || 1000
+        };
+        return eos.getProducers(params);
+    }
+
+    transaction(code, func, options) {
+        const eos = Eos(this.getOptions(options));
+        return eos.transaction(code, (contract) => {
+            func(contract);
+        });
+    }
+
+    contract(code, func, options) {
+        const eos = Eos(this.getOptions(options));
+        return eos.contract(code)
+            .then((contract) => {
+                return func(contract);
+            });
+    }
+
     setpriv(priv, endpoint) { // eosio.bios contract
         const eos = Eos(this.getOptions({endpoint}));
         return eos.contract('eosio')
@@ -76,7 +101,7 @@ class EosApi {
     }
 
     regproducer(prod, keyProvider, endpoint) {
-        console.log(keyProvider);
+        // console.log(keyProvider);
         const eos = Eos(this.getOptions({endpoint, keyProvider}));
         return eos.contract(eosNodeConfig.systemAccount)
             .then((contract) => {
@@ -154,24 +179,14 @@ class EosApi {
             });
     }
 
-    getProducers(lowerBound, limit, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
-        const params = {
-            json : true,
-            lower_bound : lowerBound,
-            limit : limit || 1000
-        };
-        return eos.getProducers(params);
-    }
-
-    deployContract(account, contractPath, endpoint, keyProvider) {
+    deployContract(account, contractPath, options) {
         const name = path.parse(contractPath).base;
         const self = this;
         return Promise.join(
             readFile(`${contractPath}/${name}.wasm`),
             readFile(`${contractPath}/${name}.abi`, 'utf-8'),
             async function(wasm, abi) {
-                const eos = Eos(self.getOptions({endpoint, keyProvider, binaryen}));
+                const eos = Eos(self.getOptions(_.defaults({}, {binaryen}, options)));
                 const retCode = await eos.setcode(account, 0, 0, wasm);     // @returns {Promise}
                 const retAbi = await eos.setabi(account, JSON.parse(abi));  // @returns {Promise}
                 return {retCode, retAbi};

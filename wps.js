@@ -7,7 +7,7 @@ let Promise = require('bluebird'),
 
 class EosWpsApi extends eosApi.EosApiImp  {
     regcommittee(committee, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.regcommittee(committee, {authorization: authorization});
@@ -15,7 +15,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     regreviewer(reviewer, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.regreviewer(reviewer, {authorization: authorization});
@@ -23,7 +23,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     regproposer(proposer, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.regproposer(proposer, {authorization: authorization});
@@ -31,7 +31,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     regproposal(proposal, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.regproposal(proposal, {authorization: authorization});
@@ -39,7 +39,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     acceptprop(params, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.acceptprop(params, {authorization: authorization});
@@ -47,7 +47,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     rejectprop(params, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.rejectprop(params, {authorization: authorization});
@@ -55,7 +55,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     checkvote(params, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.checkvote(params, {authorization: authorization});
@@ -63,7 +63,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     vote(params, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.vote(params, {authorization: authorization});
@@ -71,7 +71,7 @@ class EosWpsApi extends eosApi.EosApiImp  {
     }
 
     unvote(params, key, authorization) { // eosio.wps contract
-        const eos = this.getEos(undefined, key);
+        const eos = this.getEos({keyProvider : key});
         return eos.contract('eosio.wps')
             .then((contract) => {
                 return contract.unvote(params, {authorization: authorization});
