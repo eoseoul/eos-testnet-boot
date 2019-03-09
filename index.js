@@ -4,8 +4,8 @@ let Promise = require('bluebird'),
     _ = require('lodash'),
     path = require('path'),
     eosApi = require('external_apis/eos_api'),
-    data = require('./data'),
-    wps = require('./wps');
+    data = require('./data');
+    // wps = require('./wps');
 
 bootNode();
 
@@ -23,9 +23,9 @@ async function bootNode() {
                         return;
                     }
                     throw err;
-                })
-                .delay(200);
-        });
+                });
+        })
+        .delay(1000);
     }();
 
     await function() {
@@ -45,15 +45,16 @@ async function bootNode() {
         console.log('setpriv');
         return Promise.each(dummy.systemAccounts, (account) => {
             console.log(`setpriv ${account.name}.`);
-            return Promise.resolve(eosApi.setpriv({account : account.name, is_priv : 1}))
-                .delay(200);
-        });
+            return Promise.resolve(eosApi.setpriv({account : account.name, is_priv : 1}));
+        })
+        .delay(2000);
     }();
 
     await function() {
         console.log('deploy eosio.token contract');
         const contractPath = path.join(__dirname, 'contract', 'eosio.token');
-        return eosApi.deployContract('eosio.token', contractPath)
+        return Promise.resolve(eosApi.deployContract('eosio.token', contractPath))
+        .delay(2000)
         .catch((err) => {
             if (err.error && err.error.code === 3160008) { // set_exact_code: Contract is already running this version
                 console.log(err.error.what);
@@ -66,13 +67,11 @@ async function bootNode() {
     await function() {
         console.log('create and issue system token');
         const Eos = eosApi.getEos();
-        return Eos.transaction('eosio.token', (eosio_token) => {
+        return Promise.resolve(Eos.transaction('eosio.token', (eosio_token) => {
             eosio_token.create('eosio', dummy.systemToken.create, {authorization: 'eosio.token'});
             eosio_token.issue('eosio', dummy.systemToken.issue, 'issue', {authorization: 'eosio'});
-        })
-        .then((result) => {
-            // console.log(result);
-        });
+        }))
+        .delay(2000);
     }();
 
     await function() {
@@ -101,8 +100,7 @@ async function bootNode() {
                         return;
                     }
                     throw err;
-                })
-                .delay(200);
+                });
         })
         .then(() => {
             return Promise.each(dummy.newProdAccounts, (prodAccount) => {
@@ -116,8 +114,7 @@ async function bootNode() {
                         return;
                     }
                     throw err;
-                })
-                .delay(200);
+                });
             });
         });
     }();
@@ -131,8 +128,7 @@ async function bootNode() {
             .catch(function(err) {
                 console.log(err);
                 throw err;
-            })
-            .delay(200);
+            });
         });
     }();
 
@@ -143,28 +139,27 @@ async function bootNode() {
             return Promise.resolve(eosApi.transfer(transfer))
             .then((result) => {
                 // console.log(result);
-            })
-            .delay(200);
+            });
         });
     }();
 
+    /*
     await function() {
         console.log('buyram ===>');
         return Promise.each(dummy.buyRams, (ram) => {
             console.log(`buyram ${ram.receiver}`);
             const user = _.find(data.accounts.users, {name : ram.payer});
-            return Promise.resolve(eosApi.buyram(ram, user.pvt))
-            .delay(200);
+            return Promise.resolve(eosApi.buyram(ram, user.pvt));
         });
     }();
+    */
 
     await function() {
         console.log('delegatebw ===>');
         return Promise.each(dummy.delegates, (delegate) => {
             console.log(`delegatebw ${delegate.receiver}`);
             const user = _.find(data.accounts.users, {name : delegate.from});
-            return Promise.resolve(eosApi.delegatebw(delegate, user.pvt))
-            .delay(200);
+            return Promise.resolve(eosApi.delegatebw(delegate, user.pvt));
         });
     }();
 
@@ -174,8 +169,7 @@ async function bootNode() {
             console.log(`voteproducer ${vote.voter}`);
             const user = _.find(data.accounts.users, {name : vote.voter});
             vote.producers = vote.producers.sort();
-            return Promise.resolve(eosApi.voteproducer(vote, user.pvt))
-            .delay(20);
+            return Promise.resolve(eosApi.voteproducer(vote, user.pvt));
         });
     }();
 

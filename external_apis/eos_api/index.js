@@ -2,10 +2,34 @@
 
 const Promise = require('bluebird'),
     _ = require('lodash'),
-    config = require('config');
+    config = require('config'),
+    path = require('path'),
+    fs = require('fs');
+
+const readFile = Promise.promisify(fs.readFile);
+
 
 const eosNodeConfig = config.eosNode;
 const EosApiImp = require('./eos_api_impl');
+
+const wrappedEosApi = wrap(EosApiImp);
+
+async function deployContract(account, contractPath, options) {
+    const name = path.parse(contractPath).base;
+    return Promise.join(
+        readFile(`${contractPath}/${name}.wasm`),
+        readFile(`${contractPath}/${name}.abi`, 'utf-8'),
+        async function(wasm, abi) {
+            const retCode = await wrappedEosApi.setcode(account, 0, 0, wasm, options)
+                .catch((err) => {
+                    if (err.code === 3160008) {
+                        return err.code;
+                    }
+                });
+            const retAbi = await wrappedEosApi.setabi(account, JSON.parse(abi), options);
+            return {retCode, retAbi};
+        });
+}
 
 function wrap(_EosApi) {
     let endpoints = _.clone(config.eosNode.endpoints);
@@ -28,7 +52,7 @@ function wrap(_EosApi) {
     for (const key of Object.getOwnPropertyNames(proto)) {
         const func = proto[key];
         if (key === 'getEos') {
-            EosApiWrap[key] = () => {
+            EosApiWrap[key] = function() {
                 return func.apply(eosApi, arguments);
             };
         }
@@ -50,7 +74,8 @@ function wrap(_EosApi) {
                                 err = JSON.parse(err);
                             }
                             if (!_.isNil(err.error)) {
-                                if (err.error.code === 3080006) { // transaction too long // push_transaction의 경우, error.message를 eosjs에서 리턴함.
+                                if (err.error.code === 3080006 || err.error.code === 3081001) { // transaction too long // push_transaction의 경우, error.message를 eosjs에서 리턴함.
+                                                                                                // 3081001,"name":"leeway_deadline_exception
                                     console.log('transaction too long delay');
                                     return Promise.resolve(null).delay(5000);
                                 }
@@ -79,4 +104,4 @@ function wrap(_EosApi) {
     return EosApiWrap;
 }
 
-module.exports = exports = Object.assign({}, wrap(EosApiImp), {wrap, EosApiImp});
+module.exports = exports = Object.assign({}, wrap(EosApiImp), {wrap, EosApiImp, deployContract});

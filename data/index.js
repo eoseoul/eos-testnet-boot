@@ -8,7 +8,7 @@ const producerCount = accounts.producers.length;
 const eosPerUser = parseInt(1000000000 / userCount, 10);
 const delegatePerUser = parseInt(eosPerUser * 0.4, 10);
 const users = _.slice(accounts.users, 0, userCount);
-const ram = 10;
+const ram = 20;
 const stake_cpu = 20;
 const stake_net = 20;
 const create = 10000000000;
@@ -16,7 +16,7 @@ const issue = 1000000000 + ram * (userCount + producerCount) + stake_cpu * (user
 
 const systemToken = {
     create : `${create}.0000 EOS`,
-    issue : `${issue + 10000000}.0000 EOS`
+    issue : `${issue + 10000000}.0000 EOS` // +10000000 for test
 };
 
 const systemAccounts = [
@@ -55,7 +55,7 @@ const newAccountBuyRam = {payer : 'eosio', receiver : '', quant : `${ram}.0000 E
 const newAccountDelegate = {from : 'eosio', receiver : '', stake_net_quantity : `${stake_net}.0000 EOS`, stake_cpu_quantity : `${stake_cpu}.0000 EOS`, transfer : 1};
 
 const delegates = _.map(users, (user) => {
-    return {from : user.name, receiver : user.name, stake_net_quantity : `${delegatePerUser}.0000 EOS`, stake_cpu_quantity : `${delegatePerUser}.0000 EOS`, transfer : 0};
+    return {from : user.name, receiver : user.name, stake_net_quantity : `${delegatePerUser}.0000 EOS`, stake_cpu_quantity : `${0}.0000 EOS`, transfer : 0};
 });
 
 const votes = _.map(users, (user, index) => {

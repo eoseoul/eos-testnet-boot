@@ -25,28 +25,28 @@ class EosApi {
         return Eos(this.getOptions(options));
     }
 
-    getInfo(endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    getInfo(httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.getInfo({});
     }
 
-    getBlock(blockId, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    getBlock(blockId, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.getBlock(blockId);
     }
 
-    getAccount(name, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    getAccount(name, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.getAccount(name);
     }
 
-    getKeyAccounts(publicKey, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    getKeyAccounts(publicKey, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.getKeyAccounts(publicKey);
     }
 
-    getTableRows(code, scope, table, tableKey, lowerBound, limit, keyType, indexPosition, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    getTableRows(code, scope, table, tableKey, lowerBound, limit, keyType, indexPosition, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         if (_.isString(lowerBound) === true) {
             lowerBound = format.encodeName(lowerBound, false);
         }
@@ -67,8 +67,8 @@ class EosApi {
         return eos.getTableRows(params);
     }
 
-    getProducers(lowerBound, limit, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    getProducers(lowerBound, limit, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         const params = {
             json : true,
             lower_bound : lowerBound,
@@ -92,41 +92,41 @@ class EosApi {
             });
     }
 
-    setpriv(priv, endpoint) { // eosio.bios contract
-        const eos = Eos(this.getOptions({endpoint}));
+    setpriv(priv, httpEndpoint) { // eosio.bios contract
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.contract('eosio')
             .then((contract) => {
                 return contract.setpriv(priv, {authorization: `${eosNodeConfig.systemAccount}`});
             });
     }
 
-    regproducer(prod, keyProvider, endpoint) {
+    regproducer(prod, keyProvider, httpEndpoint) {
         // console.log(keyProvider);
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract(eosNodeConfig.systemAccount)
             .then((contract) => {
                 return contract.regproducer(prod, {authorization: `${prod.producer}`});
             });
     }
 
-    unregprod(name, keyProvider, endpoint) {
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+    unregprod(name, keyProvider, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract(eosNodeConfig.systemAccount)
             .then((contract) => {
                 return contract.unregprod(name, {authorization: `${name}`});
             });
     }
 
-    delegatebw(delegate, keyProvider, endpoint) {
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+    delegatebw(delegate, keyProvider, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract(eosNodeConfig.systemAccount)
             .then((contract) => {
                 return contract.delegatebw(delegate, {authorization: `${delegate.from}`});
             });
     }
 
-    undelegatebw(undelegate, keyProvider, endpoint) {
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+    undelegatebw(undelegate, keyProvider, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract(eosNodeConfig.systemAccount)
             .then((contract) => {
                 return contract.undelegatebw(undelegate, {authorization: `${undelegate.from}`});
@@ -134,32 +134,32 @@ class EosApi {
     }
 
     // {from: 'inita', to: 'initb', quantity: '1.0000 EOS', memo: ''}
-    buyram(ram, keyProvider, endpoint) {
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+    buyram(ram, keyProvider, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract('eosio')
             .then((contract) => {
                 return contract.buyram(ram, {authorization: `${ram.payer}`});
             });
     }
 
-    voteproducer(vote, keyProvider, endpoint) {
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+    voteproducer(vote, keyProvider, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract(eosNodeConfig.systemAccount)
             .then((contract) => {
                 return contract.voteproducer(vote, {authorization: `${vote.voter}`});
             });
     }
 
-    setprods(prods, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    setprods(prods, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.contract(eosNodeConfig.biosAccount)
             .then((contract) => {
                 return contract.setprods(prods, {authorization: `${eosNodeConfig.biosAccount}`});
             });
     }
 
-    newaccount(account, ram, delegate, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    newaccount(account, ram, delegate, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.transaction('eosio', (contract) => {
             contract.newaccount(account, {authorization: `${eosNodeConfig.systemAccount}`});
             if (!_.isEmpty(delegate)) {
@@ -171,14 +171,25 @@ class EosApi {
         });
     }
 
-    transfer(_transfer, keyProvider, endpoint) {
-        const eos = Eos(this.getOptions({endpoint, keyProvider}));
+    transfer(_transfer, keyProvider, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint, keyProvider}));
         return eos.contract('eosio.token')
             .then((contract) => {
                 return contract.transfer(_transfer, {authorization: `${eosNodeConfig.systemAccount}`});
             });
     }
 
+    setcode(account, vmType, vmVersion, code, options) {
+        const eos = Eos(this.getOptions(options));
+        return eos.setcode(account, vmType, vmVersion, code);
+    }
+
+    setabi(account, abi, options) {
+        const eos = Eos(this.getOptions(options));
+        return eos.setabi(account, abi);
+    }
+
+    /*
     deployContract(account, contractPath, options) {
         const name = path.parse(contractPath).base;
         const self = this;
@@ -192,6 +203,7 @@ class EosApi {
                 return {retCode, retAbi};
             });
     }
+    */
 
     /* auth = {
         'account': account,
@@ -206,8 +218,8 @@ class EosApi {
         }
     }
     */
-    updateauth(auth, endpoint) {
-        const eos = Eos(this.getOptions({endpoint}));
+    updateauth(auth, httpEndpoint) {
+        const eos = Eos(this.getOptions({httpEndpoint}));
         return eos.contract('eosio')
             .then((contract) => {
                 return contract.updateauth(auth, {authorization: `${auth.account}@${auth.permission}`});
