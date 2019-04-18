@@ -59,7 +59,7 @@ class EosApi {
     getActions(req, httpEndpoint) {
         const options = this.getOptions({httpEndpoint});
         const rpc = new JsonRpc(options.httpEndpoint, {fetch});
-        return rpc.history_get_actions(...req);
+        return rpc.history_get_actions(req.account_name, req.pos, req.offset);
     }
 
     getAccount(name, httpEndpoint) {
