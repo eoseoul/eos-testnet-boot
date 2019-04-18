@@ -52,10 +52,10 @@ const buyRams = _.map(users, (user) => {
 });
 
 const newAccountBuyRam = {payer : 'eosio', receiver : '', quant : `${ram}.0000 EOS`};
-const newAccountDelegate = {from : 'eosio', receiver : '', stake_net_quantity : `${stake_net}.0000 EOS`, stake_cpu_quantity : `${stake_cpu}.0000 EOS`, transfer : 1};
+const newAccountDelegate = {from : 'eosio', receiver : '', stake_net_quantity : `${stake_net}.0000 EOS`, stake_cpu_quantity : `${stake_cpu}.0000 EOS`, transfer : true};
 
 const delegates = _.map(users, (user) => {
-    return {from : user.name, receiver : user.name, stake_net_quantity : `${delegatePerUser}.0000 EOS`, stake_cpu_quantity : `${0}.0000 EOS`, transfer : 0};
+    return {from : user.name, receiver : user.name, stake_net_quantity : `${delegatePerUser}.0000 EOS`, stake_cpu_quantity : `${0}.0000 EOS`, transfer : false};
 });
 
 const votes = _.map(users, (user, index) => {
@@ -97,11 +97,11 @@ const authes = (() => {
 const committees = [{
     committeeman : 'committeeaaa',
     category : 'emergency',
-    is_oversight : 1
+    is_oversight : true
 }, {
     committeeman : 'committeeaab',
     category : 'watchman',
-    is_oversight : 1
+    is_oversight : true
 }];
 
 const reviewers = [{
