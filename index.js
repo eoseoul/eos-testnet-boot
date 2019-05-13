@@ -11,6 +11,7 @@ let Promise = require('bluebird'),
 bootNode();
 
 async function bootNode() {
+
     const dummy = Object.assign({}, {}, data);
     await function() {
         console.log('create systemAccounts');
@@ -72,6 +73,8 @@ async function bootNode() {
         });
     }();
 
+    await Promise.delay(3000);
+
     await function() {
         console.log('create and issue system token');
 
@@ -105,6 +108,26 @@ async function bootNode() {
             }
             throw err;
         });
+    }();
+
+    await function() {
+        console.log('init eosio.system');
+        const authorization = eosApi.createAuthorization('eosio', 'active');
+        // console.log(eosApi.Serialize.stringToSymbol('4,EOS'));
+        const initAction = eosApi.createAction('eosio', 'init', {
+            version : 0,
+            core : '4,EOS'
+            //core : eosApi.Serialize.stringToSymbol('4,EOS')
+        }, authorization);
+        return Promise.resolve(eosApi.transact({actions : [initAction]}));
+    }();
+
+    await function() {
+        console.log('deploy rex.results.abi');
+
+        const authorization = eosApi.createAuthorization('eosio.rex', 'active');
+        const abiPath = path.join(__dirname, 'contract', 'eosio.system/.rex/rex.results.abi');
+        return eosApi.deployAbi('eosio.rex', abiPath, authorization);
     }();
 
     await function() {

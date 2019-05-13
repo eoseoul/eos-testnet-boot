@@ -45,6 +45,11 @@ async function deployContract(account, contractPath, authorizations, options) {
         });
 }
 
+async function deployAbi(account, abiPath, authorizations, options) {
+    const abi = await readFile(abiPath, 'utf-8');
+    return setabi(account, wrappedEosApi.getAbiHex(abi), authorizations, options);
+}
+
 function setcode(account, vmtype, vmversion, code, authorizations, options) {
     const data = {account, vmtype, vmversion, code};
     const action = createAction('eosio', 'setcode', data, authorizations);
@@ -218,7 +223,7 @@ function wrap(EosApi) {
 module.exports = exports = Object.assign({}, wrappedEosApi, {
     wrap, EosApiImp,
     createAction, createAuthorization,
-    deployContract, setcode, setabi,
+    deployContract, deployAbi, setcode, setabi,
     newaccount,
     setpriv,
     updateauth,
