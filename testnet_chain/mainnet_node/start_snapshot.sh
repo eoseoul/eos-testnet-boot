@@ -1,0 +1,13 @@
+#!/bin/bash
+DATADIR=$(pwd)/data
+SNAPSHOT="${DATADIR}/snapshot-77124637.bin"
+
+if [ ! -d "$DATADIR" ]; then
+    mkdir -p $DATADIR
+fi
+
+$(pwd)/stop.sh
+echo -e "Starting Nodeos \n";
+
+nodeos --data-dir $DATADIR --config-dir $(pwd) --snapshot $SNAPSHOT "$@" > $DATADIR/stdout.txt 2> $DATADIR/stderr.txt &  echo $! > $DATADIR/nodeos.pid
+#../../../eos/build/programs/nodeos/nodeos --data-dir $DATADIR --config-dir $(pwd) "$@" > $DATADIR/stdout.txt 2> $DATADIR/stderr.txt &  echo $! > $DATADIR/nodeos.pid

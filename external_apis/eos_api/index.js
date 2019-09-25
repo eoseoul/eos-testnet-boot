@@ -152,6 +152,11 @@ function transfer(data, code, authorizations, options) {
     return wrappedEosApi.transact({actions : [action]}, options);
 }
 
+function activate(data, authorizations, options) {
+    const action = createAction('eosio', 'activate', data, authorizations);
+    return wrappedEosApi.transact({actions : [action]}, options);
+}
+
 function regrecord(data, code, authorizations, options) {
     const action = createAction(code, 'regrecord', data, authorizations);
     return wrappedEosApi.transact({actions : [action]}, options);
@@ -229,7 +234,7 @@ module.exports = exports = Object.assign({}, wrappedEosApi, {
     updateauth,
     buyram, buyrambytes, delegatebw, undelegatebw,
     regproducer, unregprod, voteproducer,
-    create, issue, transfer,
+    create, issue, transfer, activate,
     regrecord
 });
 
